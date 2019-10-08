@@ -1,0 +1,10 @@
+	- Inserts____________________________________/*
+	- Selects____________________________________/**
+	- Update_____________________________________/*
+	- Login______________________________________/**
+	- Validaciones con advertencias de css_______/*
+	- Todo subido al github______________________/**
+
+	* = Por Hacer
+	** = Se esta haciendo
+	*** = Terminado
