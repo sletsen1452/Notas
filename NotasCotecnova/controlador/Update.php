@@ -111,5 +111,3 @@ if( isset($_POST['enviar1']) && !empty($_POST['tipo_documento1']) && !empty($_PO
         
     }    
 }
-
-
