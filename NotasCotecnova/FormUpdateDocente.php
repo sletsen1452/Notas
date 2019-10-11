@@ -58,7 +58,7 @@
                         <div class="card">
                             
     <?php 
-    if(isset($_POST['enviar22']) && !empty($_POST['buscar22'])){
+    if( !empty($_POST['buscar22'])){
     //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
         while($resultado = mysqli_fetch_assoc($docentes_id)){
             if($_POST['buscar22']== $resultado['numero_de_identificacion']){
@@ -122,7 +122,7 @@
                 <input type="password" class="form-control" id="formGroupExampleInput2" name="contrasenna2" placeholder="Ingrese una contraseña para el estudiante">
             </div>
             <div class="form-group">
-                <button type="submit" id="enviar1" name="enviar2" value="<?php echo $_POST['buscar12'];?>" class="btn btn-primary">Submit</button>
+                <button type="submit" id="enviar2" name="enviar2" value="<?php echo $_POST['buscar22'];?>" class="btn btn-primary">Submit</button>
             </div>
         </form>                                    
     </div>
