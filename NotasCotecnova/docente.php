@@ -314,15 +314,28 @@
                                 <div class="card-body">
                                     <h4 class="box-title">EDITAR ESTUDIANTE </h4>
                                 </div>  
-                                
-                                
                                 <div class="card-body">
-                                    <form class="form-inline md-form mr-auto mb-4" action="FormUpdateEstudiante.php" method="POST" ><!-- action="#" method="POST" -->
-                                        <input name="buscar12" class="form-control col-md-8" type="text" placeholder="Ingrese documento a buscar" aria-label="Search">
-                                        <input name="enviar12" id="enviar12" class="btn aqua-gradient btn-rounded btn-sm my-1" type="submit" value="Buscar">
-                                    </form>  
-                                    
-                                    
+                                    <div id="editar1" class="form-inline md-form mr-auto mb-4" > 
+                                        <input name="buscar12" id="buscar12" type="text" class="form-control col-md-8"  placeholder="Ingrese documento a buscar" >
+                                        <span >
+                                            <button name="enviar12" class="btn aqua-gradient btn-rounded btn-sm my-1" type="button" onclick="loadLog1()">Enviar</button>
+                                        </span>
+                                    </div>
+                                    <script>
+                                        function loadLog1() {
+                                            var buscar12= document.getElementById('buscar12').value;
+                                            var xhttp = new XMLHttpRequest();
+                                            xhttp.onreadystatechange = function() {
+                                                //Si 4 = se proceso y ya se recibieron los datos y 200 = se enviaron los datos correctamente
+                                                if (xhttp.readyState == 4 && xhttp.status == 200){
+                                                    document.getElementById("editar1").innerHTML = xhttp.responseText;//obtener los datos de respuesta como una cadena
+                                                }
+                                            };
+                                            xhttp.open("POST", "FormUpdateEstudiante.php", true);//Realiza la petición de apertura de comunicación con método POST.
+                                            xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");//Añade un par cabecera – valor a la cabecera HTTP. Necesario para pasar datos por POST.
+                                            xhttp.send("buscar12="+buscar12+"");//Envia la peticion al servidor
+                                        }
+                                    </script>                                     
                                 </div> 
                             </div> <!-- /.card -->
                         </div>  <!-- /.col-lg-12 -->
