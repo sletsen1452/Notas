@@ -24,8 +24,9 @@
         //ECHO $id;
         $mysql = new MySQL(); //se declara un nuevo array
         $mysql->conectar();//Conexion a la base de datos
-        $id_estudiantes = $mysql->efectuarConsulta("SELECT notas.estudiantes.nombres FROM notas.estudiantes where notas.estudiantes.documento_de_identificacion = ".$id."");
-        //Select para hacer la consulta de los docentes, para mostrar la info en la grid de docentes
+        $id_estudiantes = $mysql->efectuarConsulta("SELECT notas.estudiantes.nombres, notas.estudiantes.apellidos, notas.estado_civil.estado_civil, notas.estado_civil.id_estado_civil, notas.ciudades.ciudad_nacimiento, notas.ciudades.id_ciudad_nacimiento,notas.programas.Programa_nombre, notas.programas.id_Programas, notas.tipo_documento.tipo_documento, notas.tipo_documento.id_tipo_documento, notas.estudiantes.documento_de_identificacion,notas.estudiantes.contrasenna FROM notas.estudiantes inner join notas.estado_civil on notas.estudiantes.estado_civil_id_estado_civil=notas.estado_civil.id_estado_civil inner join notas.ciudades on notas.estudiantes.ciudades_id_ciudad_nacimiento=notas.ciudades.id_ciudad_nacimiento inner join notas.programas on notas.estudiantes.Programas_id_Programas=notas.programas.id_Programas inner join notas.tipo_documento on notas.estudiantes.tipo_documento_id_tipo_documento=notas.tipo_documento.id_tipo_documento where notas.estudiantes.documento_de_identificacion = ".$id."");
+     
+//Select para hacer la consulta de los docentes, para mostrar la info en la grid de docentes
         $docentes = $mysql->efectuarConsulta("SELECT notas.docentes.id, notas.docentes.nombres, notas.docentes.apellidos, notas.docentes.numero_de_identificacion FROM notas.docentes");
         $docentes_id = $mysql->efectuarConsulta("SELECT notas.docentes.id, notas.docentes.numero_de_identificacion FROM notas.docentes");
 //Select para hacer la consulta de los estudiantes, para mostrar la info en la grid de estudiantes
@@ -49,6 +50,22 @@
         $selectTipoDocumento2 = $mysql->efectuarConsulta("SELECT notas.tipo_documento.id_tipo_documento, notas.tipo_documento.tipo_documento FROM notas.tipo_documento");
 //Select para hacer la consulta de los Programas, para mostrar la info en los selects de los formularios
         $selectPrograma = $mysql->efectuarConsulta("SELECT notas.programas.id_Programas, notas.programas.Programa_nombre FROM notas.programas");
+         
+    //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
+      while($resultado = mysqli_fetch_assoc($id_estudiantes)){
+          $nombre_e=$resultado['nombres'];
+          $apellido_e=$resultado['apellidos'];
+          $estado_e=$resultado['estado_civil'];
+          $id_estado_e=$resultado['id_estado_civil'];
+          $ciudad_e=$resultado['ciudad_nacimiento'];
+          $id_ciudad_e=$resultado['id_ciudad_nacimiento'];
+          $programa_e=$resultado['Programa_nombre'];
+          $id_programa_e=$resultado['id_Programas'];
+          $tipo_documento_e=$resultado['tipo_documento'];
+          $documento_e=$resultado['documento_de_identificacion'];
+          $contra_e=$resultado['contrasenna'];
+      }
+                    
         $mysql->desconectar();//desconexion de la conexion con elo servidor 
     ?>
     <div class="content" id="content3" >
@@ -71,91 +88,68 @@
         <form action="controlador/Update.php" method="POST">
             <div class="form-group">
                 <label>Tipo de Documento</label>
-                <select name="tipo_documento1" class="form-control" id="exampleFormControlSelect1" data-live-search="true">
-                    <option disabled selected>Seleccione tipo de documento de identidad</option>
-                    <?php 
-                    //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
-                    while($resultado = mysqli_fetch_assoc($selectTipoDocumento)){
-                    ?>
-                <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <option value="<?php echo $resultado['id_tipo_documento'] ?>"><?php echo $resultado['tipo_documento'] ?></option>
-            <?php   }   ?>
-                </select>
+               <input type="text" class="form-control" id="formGroupExampleInput2" name="tipo_documento1" value="<?php echo $tipo_documento_e ?>" placeholder="Ingrese tipo de documento">
             </div>
             <div class="form-group">
                 <label>Numero de documento</label>
-                <input type="text" class="form-control" id="formGroupExampleInput2" name="documento1" placeholder="Ingrese Numero de identidad">
+                <input type="text" class="form-control" id="formGroupExampleInput2" name="documento1" value="<?php echo $documento_e ?>" placeholder="Ingrese Numero de identidad">
             </div>
             <div class="form-group">
                 <label>Nombres</label>
-                <?php 
-                    //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
-                    while($resultado = mysqli_fetch_assoc($id_estudiantes)){
-                    ?>
+               
                 <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <input type="text" class="form-control" id="formGroupExampleInput2" name="nombre1" value="<?php echo $resultado['nombres'] ?>" placeholder="Ingrese nombre o  nombres">
-            <?php   }   ?>
+                    <input type="text" class="form-control" id="formGroupExampleInput2" name="nombre1" value="<?php echo $nombre_e ?>" placeholder="Ingrese nombre o  nombres">
+            <?php     ?>
                 
             </div>
             <div class="form-group">
                 <label>Apellidos</label>
-                <input type="text" class="form-control" id="formGroupExampleInput2" name="apellido1" placeholder="Ingrese apellido o apellidos">
+                
+                <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
+                    <input type="text" class="form-control" id="formGroupExampleInput2" name="apellido1" value="<?php echo $apellido_e?>" placeholder="Ingrese apellido o apellidos">
+           
             </div>
             <div class="form-group">
-                <label for="exampleFormControlSelect1">Estado Civil</label>
+                <label for="exampleFormControlSelect1">Estado Civil</label>    
                 <select name="estado_civil1" class="form-control" id="exampleFormControlSelect1" data-live-search="true" >
-                    <option disabled selected >Seleccione el estado civil</option>
+                    <option value="<?php echo $id_estado_e ?>" disabled selected ><?php echo $estado_e?></option>
                     <?php 
                     //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
                     while($resultado = mysqli_fetch_assoc($selectEstadoCivil)){
                     ?>
                 <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <option value="<?php echo $resultado['id_estado_civil'] ?>" ><?php echo $resultado['estado_civil'] ?></option>
-            <?php   }   ?>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Departamento de nacimiento</label>
-                <select name="departamento1" class="form-control" id="exampleFormControlSelect1" data-live-search="true" >
-                    <option disabled selected >Seleccione el departamento de nacimiento</option>
-                    <?php 
-                    //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
-                    while($resultado = mysqli_fetch_assoc($selectDepartamentos)){
-                    ?>
-                <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <option value="<?php echo $resultado['id_departamento_nacimiento'] ?>" ><?php echo $resultado['departamento_nacimiento'] ?></option>
+                    <option value="<?php echo $id_estado_e ?>" ><?php echo $estado_e ?></option>
             <?php   }   ?>
                 </select>
             </div>
             <div class="form-group">
                 <label>Ciudad de nacimiento</label>
                 <select name="ciudad1" class="form-control" id="exampleFormControlSelect1" data-live-search="true" >
-                    <option disabled selected >Seleccione la ciudad de nacimiento</option>
+                    <option value="<?php echo $id_ciudad_e ?>" disabled selected ><?php echo $ciudad_e ?></option>
                     <?php 
                     //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
                     while($resultado = mysqli_fetch_assoc($selectCiudades)){
                     ?>
-                <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <option value="<?php echo $resultado['id_ciudad_nacimiento'] ?>" ><?php echo $resultado['ciudad_nacimiento'] ?></option>
+                
             <?php   }   ?>
                 </select>
             </div>
             <div class="form-group">
                 <label>Programa que cursa</label>
                 <select name="programa1" class="form-control" id="exampleFormControlSelect1" data-live-search="true" >
-                    <option disabled selected >Seleccione el Programa</option>
+                    <option value="<?php echo $id_programa_e?>" disabled selected ><?php echo $programa_e?></option>
                     <?php 
                     //Ciclo para recorrer los resultados de la consulta de la variable $selectTipoDocumento
                     while($resultado = mysqli_fetch_assoc($selectPrograma)){
                     ?>
                 <!-- En el value y el la opcion de la seleccion se imprimen los resultados de la consulta -->
-                    <option value="<?php echo $resultado['id_Programas'] ?>" ><?php echo $resultado['Programa_nombre'] ?></option>
+                    <option value="<?php echo $id_programa_e ?>" ><?php echo $programa_e ?></option>
             <?php   }   ?>
                 </select>
             </div>                                        
             <div class="form-group">
                 <label>Contraseña de estudiante</label>
-                <input type="password" class="form-control" id="formGroupExampleInput2" name="contrasenna1" placeholder="Ingrese una contraseña para el estudiante">
+                <input value="<?php echo $contra_e;?>" type="password" class="form-control" id="formGroupExampleInput2" name="contrasenna1" placeholder="Ingrese una contraseña para el estudiante">
             </div>
             <div class="form-group">
                 <button type="submit" id="enviar1" name="enviar1" value="<?php echo $_POST['buscar12'];?>" class="btn btn-primary">Submit</button>
